@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>アプリ作ってますページ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --butter: #FFD95A;
+      --cat-pink: #FF6B9D;
+      --mint: #4ECDC4;
+      --violet: #A78BFA;
+      --dark: #1A1A2E;
+      --ink: #16213E;
+      --white: #FAFAFA;
+      --radius: 24px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans JP', 'Space Grotesk', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE TEXTURE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+      animation: drift 8s ease-in-out infinite alternate;
+    }
+
+    .blob-1 { width: 500px; height: 500px; background: var(--butter); top: -100px; left: -150px; animation-delay: 0s; }
+    .blob-2 { width: 400px; height: 400px; background: var(--cat-pink); top: 30%; right: -100px; animation-delay: -3s; }
+    .blob-3 { width: 350px; height: 350px; background: var(--violet); bottom: -50px; left: 30%; animation-delay: -5s; }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(30px, 20px) scale(1.08); }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px);
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+    }
+
+    .badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--mint); animation: pulse 2s ease-in-out infinite; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(1.4); }
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 8vw, 88px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 .accent {
+      background: linear-gradient(135deg, var(--butter) 0%, var(--cat-pink) 50%, var(--violet) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: rgba(255,255,255,0.6);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    .scroll-hint {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.3);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: 'Space Grotesk', sans-serif;
+      animation: fadeInUp 1s 1.2s both;
+    }
+
+    .scroll-arrow {
+      width: 24px;
+      height: 24px;
+      border-right: 2px solid rgba(255,255,255,0.3);
+      border-bottom: 2px solid rgba(255,255,255,0.3);
+      transform: rotate(45deg);
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translate(0, 0); }
+      50%       { transform: rotate(45deg) translate(4px, 4px); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── APP SECTIONS ─── */
+    .app-section {
+      padding: 100px 24px;
+      position: relative;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .app-card {
+      border-radius: 40px;
+      padding: clamp(40px, 6vw, 80px);
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .app-card { grid-template-columns: 1fr; gap: 40px; }
+      .app-card.reverse .app-visual { order: -1; }
+    }
+
+    /* ── バター猫オセロ card ── */
+    .card-othello {
+      background: linear-gradient(135deg, #1e1a0e 0%, #2d2215 60%, #1e1a0e 100%);
+      border: 1px solid rgba(255, 217, 90, 0.2);
+    }
+
+    .card-othello::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(255,217,90,0.25) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    /* ── Biboloc card ── */
+    .card-biboloc {
+      background: linear-gradient(135deg, #0d1a2e 0%, #112240 60%, #0d1a2e 100%);
+      border: 1px solid rgba(78, 205, 196, 0.2);
+    }
+
+    .card-biboloc::before {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(78,205,196,0.2) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    /* ── text side ── */
+    .app-text { position: relative; z-index: 1; }
+
+    .app-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .tag-othello { background: rgba(255,217,90,0.15); color: var(--butter); border: 1px solid rgba(255,217,90,0.3); }
+    .tag-biboloc { background: rgba(78,205,196,0.15); color: var(--mint); border: 1px solid rgba(78,205,196,0.3); }
+
+    .app-title {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .app-title-en {
+      font-size: 14px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      opacity: 0.45;
+      letter-spacing: 0.05em;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+
+    .app-desc {
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 32px;
+    }
+
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.6;
+    }
+
+    .feature-icon {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      margin-top: 1px;
+    }
+
+    .icon-othello { background: rgba(255,217,90,0.15); }
+    .icon-biboloc { background: rgba(78,205,196,0.15); }
+
+    /* ── CTA button ── */
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: 16px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+
+    .btn-othello { background: var(--butter); color: #1A1200; box-shadow: 0 4px 24px rgba(255,217,90,0.3); }
+    .btn-biboloc { background: var(--mint); color: #002A28; box-shadow: 0 4px 24px rgba(78,205,196,0.3); }
+
+    .btn-apple-icon { font-size: 18px; }
+
+    /* ── visual side ── */
+    .app-visual {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── phone mock (othello) ── */
+    .phone-mock {
+      width: min(220px, 55vw);
+      border-radius: 36px;
+      border: 3px solid rgba(255,255,255,0.12);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+      transform: rotate(-3deg);
+      transition: transform 0.4s ease;
+    }
+
+    .phone-mock:hover { transform: rotate(0deg) scale(1.02); }
+
+    .phone-mock img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── buttercat mascot ── */
+    .buttercat-mascot {
+      position: absolute;
+      width: 120px;
+      bottom: 16px;
+      left: 10px;
+      transform: rotate(-8deg);
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.5));
+      animation: floatY 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    /* ── app icon + title row ── */
+    .app-title-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+
+    .app-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    }
+
+    /* ── feature icon image ── */
+    .feature-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* ── Biboloc preview gallery ── */
+    .preview-gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .preview-card {
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease;
+      border: 1px solid rgba(78,205,196,0.12);
+    }
+
+    .preview-card:hover { transform: translateY(-4px); }
+    .preview-card img { width: 100%; display: block; }
+
+    /* floating badges on visual */
+    .float-badge {
+      position: absolute;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .badge-free {
+      top: 10%;
+      right: -10%;
+      color: var(--butter);
+      border-color: rgba(255,217,90,0.2);
+      background: rgba(255,217,90,0.06);
+      animation: floatY 3s ease-in-out infinite;
+    }
+
+    .badge-rating {
+      bottom: 10%;
+      left: -8%;
+      color: var(--mint);
+      border-color: rgba(78,205,196,0.2);
+      background: rgba(78,205,196,0.06);
+      animation: floatY 3.5s ease-in-out infinite reverse;
+    }
+
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      text-align: center;
+      padding: 20px 0;
+      color: rgba(255,255,255,0.1);
+      font-size: 32px;
+      letter-spacing: 0.5em;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 60px 24px;
+      text-align: center;
+      color: rgba(255,255,255,0.25);
+      font-size: 13px;
+      line-height: 1.8;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    footer a:hover { color: rgba(255,255,255,0.7); }
+
+    /* ─── SCROLL ANIMATIONS ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── META STRIP ─── */
+    .meta-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+
+
+    <h1>
+      スマホアプリ<br />
+      <span class="accent">作ってます。</span>
+    </h1>
+
+    <p class="hero-sub">
+      遊び心と実用性を詰め込んだ、<br />
+      アプリをご紹介します。<br />
+      どちらも無料でダウンロードできます。
+    </p>
+
+    <div class="scroll-hint">
+      <span>scroll</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ═══ バター猫オセロ ═══ -->
+  <section class="app-section">
+    <div class="container">
+      <div class="app-card card-othello reveal">
+
+        <div class="app-text">
+          <span class="app-tag tag-othello">🎮 Board Game</span>
+          <div class="app-title-row">
+            <img src="buttercat.png" class="app-icon" alt="バター猫オセロ アイコン" />
+            <div>
+              <h2 class="app-title" style="margin-bottom: 4px;">バター猫<br/>オセロ</h2>
+              <p class="app-title-en" style="margin-bottom: 0;">Butter Cat Othello</p>
+            </div>
+          </div>
+
+          <div class="meta-strip">
+            <span class="meta-pill">🆓 無料</span>
+            <span class="meta-pill">📱 iOS 17.0+</span>
+            <span class="meta-pill">🎯 Board Games</span>
+          </div>
+
+          <p class="app-desc">
+            「シュレーディンガーの猫のパラドックス」からインスピレーションを得た、
+            あたらしいオセロ。普通のオセロに飽きた人へ。
+            <strong style="color: rgba(255,255,255,0.9)">バター・猫・バター猫</strong>という
+            3つの特殊コマが盤面をカオスに変える。
+          </p>
+
+          <ul class="feature-list">
+            <li>
+              <span class="feature-icon icon-othello">🧈</span>
+              <span><strong style="color: var(--butter)">バターコマ</strong> ── 置くと相手色になるが、挟まれても変化しない</span>
+            </li>
+            <li>
+              <span class="feature-icon icon-othello">🐱</span>
+              <span><strong style="color: var(--cat-pink)">猫コマ</strong> ── 置くと自分色になるが、挟まれても変化しない</span>
+            </li>
+            <li>
+              <span class="feature-icon icon-othello">✨</span>
+              <span><strong style="color: var(--violet)">バター猫コマ</strong> ── 永遠に回転し続け、誰にも捕まらない存在</span>
+            </li>
+          </ul>
+
+          <a
+            href="https://apps.apple.com/jp/app/%E3%83%90%E3%82%BF%E3%83%BC%E7%8C%AB%E3%82%AA%E3%82%BB%E3%83%AD/id6760817704"
+            class="cta-btn btn-othello"
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="btn-apple-icon"></span>
+            App Store で入手
+          </a>
+        </div>
+
+        <div class="app-visual">
+          <div class="phone-mock">
+            <img src="othello.png" alt="バター猫オセロ ゲーム画面" />
+          </div>
+
+          <div class="float-badge badge-free">✦ 無料プレイ</div>
+          <div class="float-badge badge-rating">iPhone · iPad</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">· · ·</div>
+
+  <!-- ═══ Biboloc ═══ -->
+  <section class="app-section">
+    <div class="container">
+      <div class="app-card card-biboloc reverse reveal">
+
+        <div class="app-text">
+          <span class="app-tag tag-biboloc">📝 Productivity</span>
+          <div class="app-title-row">
+            <img src="appicon_2.0.png" class="app-icon" alt="Biboloc アイコン" />
+            <div>
+              <h2 class="app-title" style="margin-bottom: 4px;">Biboloc</h2>
+              <p class="app-title-en" style="margin-bottom: 0;">ビボウロク — Memo App</p>
+            </div>
+          </div>
+
+          <div class="meta-strip" style="margin-top: 20px;">
+            <span class="meta-pill">🆓 無料</span>
+            <span class="meta-pill">📱 iOS 15.0+</span>
+            <span class="meta-pill">⭐ 5.0</span>
+          </div>
+
+          <p class="app-desc">
+            「また忘れた」「管理がめんどくさい」── そんな人のために作ったメモアプリ。
+            タグで整理して、お気に入りでピン留め。
+            <strong style="color: rgba(255,255,255,0.9)">シンプルに、素早く、ちゃんと残る。</strong>
+          </p>
+
+          <ul class="feature-list">
+            <li>
+              <span class="feature-icon icon-biboloc">🏷️</span>
+              <span><strong style="color: var(--mint)">タグ管理</strong> ── ＋ボタンで即登録。カテゴリで迷わない</span>
+            </li>
+            <li>
+              <span class="feature-icon icon-biboloc">⭐</span>
+              <span><strong style="color: var(--butter)">お気に入り</strong> ── 重要なメモをリスト化して即アクセス</span>
+            </li>
+            <li>
+              <span class="feature-icon icon-biboloc">📅</span>
+              <span><strong style="color: var(--violet)">日付・月別整理</strong> ── いつ書いたかひと目でわかる</span>
+            </li>
+          </ul>
+
+          <a
+            href="https://apps.apple.com/jp/app/biboloc/id6458531710"
+            class="cta-btn btn-biboloc"
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="btn-apple-icon"></span>
+            App Store で入手
+          </a>
+        </div>
+
+        <div class="app-visual">
+          <div class="preview-gallery">
+            <div class="preview-card">
+              <img src="Appプレビュー_01.png" alt="BiBoloc - 簡単タグ付けメモアプリ" />
+            </div>
+            <div class="preview-card">
+              <img src="Appプレビュー_02.png" alt="追加したいタグをタップ" />
+            </div>
+            <div class="preview-card">
+              <img src="Appプレビュー_03.png" alt="一覧表示 日付が見やすい" />
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <p>Made by <strong style="color: rgba(255,255,255,0.5)">Eiki Ogawa</strong></p>
+    <p style="margin-top: 8px;">
+      <a href="https://apps.apple.com/jp/app/%E3%83%90%E3%82%BF%E3%83%BC%E7%8C%AB%E3%82%AA%E3%82%BB%E3%83%AD/id6760817704" target="_blank" rel="noopener">バター猫オセロ</a>
+      &nbsp;·&nbsp;
+      <a href="https://apps.apple.com/jp/app/biboloc/id6458531710" target="_blank" rel="noopener">Biboloc</a>
+    </p>
+    <p style="margin-top: 16px; font-size: 11px; opacity: 0.4;">
+      Apple and the Apple logo are trademarks of Apple Inc.
+    </p>
+  </footer>
+
+  <script>
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      }),
+      { threshold: 0.15 }
+    );
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

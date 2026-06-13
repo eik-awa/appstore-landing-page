@@ -212,6 +212,21 @@
       border-radius: 50%;
     }
 
+    /* ── 花火連鎖 card ── */
+    .card-hanabi {
+      background: linear-gradient(135deg, #1a0a1e 0%, #2a1030 60%, #1a0a1e 100%);
+      border: 1px solid rgba(255, 140, 66, 0.2);
+    }
+
+    .card-hanabi::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: -60px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(255,140,66,0.18) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
     /* ── text side ── */
     .app-text { position: relative; z-index: 1; }
 
@@ -229,6 +244,7 @@
 
     .tag-othello { background: rgba(255,217,90,0.15); color: var(--butter); border: 1px solid rgba(255,217,90,0.3); }
     .tag-biboloc { background: rgba(78,205,196,0.15); color: var(--mint); border: 1px solid rgba(78,205,196,0.3); }
+    .tag-hanabi  { background: rgba(255,140,66,0.15); color: #FF8C42; border: 1px solid rgba(255,140,66,0.3); }
 
     .app-title {
       font-size: clamp(32px, 5vw, 52px);
@@ -286,6 +302,7 @@
 
     .icon-othello { background: rgba(255,217,90,0.15); }
     .icon-biboloc { background: rgba(78,205,196,0.15); }
+    .icon-hanabi  { background: rgba(255,140,66,0.15); }
 
     /* ── CTA button ── */
     .cta-btn {
@@ -305,6 +322,7 @@
 
     .btn-othello { background: var(--butter); color: #1A1200; box-shadow: 0 4px 24px rgba(255,217,90,0.3); }
     .btn-biboloc { background: var(--mint); color: #002A28; box-shadow: 0 4px 24px rgba(78,205,196,0.3); }
+    .btn-hanabi  { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.12); cursor: default; }
 
     .btn-apple-icon { font-size: 18px; }
 
@@ -589,7 +607,7 @@
         <div class="app-text">
           <span class="app-tag tag-biboloc">📝 Productivity</span>
           <div class="app-title-row">
-            <img src="appicon_2.0.png" class="app-icon" alt="Biboloc アイコン" />
+            <img src="biboloc.png" class="app-icon" alt="Biboloc アイコン" />
             <div>
               <h2 class="app-title" style="margin-bottom: 4px;">Biboloc</h2>
               <p class="app-title-en" style="margin-bottom: 0;">ビボウロク — Memo App</p>
@@ -653,6 +671,69 @@
     </div>
   </section>
 
+  <div class="divider">· · ·</div>
+
+  <!-- ═══ 花火連鎖 ═══ -->
+  <section class="app-section">
+    <div class="container">
+      <div class="app-card card-hanabi reveal">
+
+        <div class="app-text">
+          <span class="app-tag tag-hanabi">🎆 Puzzle Game</span>
+          <div class="app-title-row">
+            <img src="hanabi-rensa-icon.png" class="app-icon" alt="花火連鎖 アイコン" />
+            <div>
+              <h2 class="app-title" style="margin-bottom: 4px;">花火連鎖</h2>
+              <p class="app-title-en" style="margin-bottom: 0;">Hanabi Rensa</p>
+            </div>
+          </div>
+
+          <div class="meta-strip" style="margin-top: 20px;">
+            <span class="meta-pill">🆓 無料</span>
+            <span class="meta-pill">📱 iOS</span>
+            <span class="meta-pill">🎆 Games</span>
+          </div>
+
+          <p class="app-desc">
+            花火を打ち上げて、連鎖を繋げ。
+            隣の花火に火花が届けば、また新たな爆発が始まる。
+            <strong style="color: rgba(255,255,255,0.9)">どこまで連鎖を伸ばせるか</strong>、
+            シンプルで奥深いパズルゲーム。
+          </p>
+
+          <ul class="feature-list">
+            <li>
+              <span class="feature-icon icon-hanabi">🎆</span>
+              <span><strong style="color: #FF8C42">連鎖爆発</strong> ── 花火が隣に届くたびに次々と爆発が続く</span>
+            </li>
+            <li>
+              <span class="feature-icon icon-hanabi">🧩</span>
+              <span><strong style="color: var(--violet)">パズル要素</strong> ── 配置と順番を考えて最大連鎖を狙え</span>
+            </li>
+            <li>
+              <span class="feature-icon icon-hanabi">✨</span>
+              <span><strong style="color: var(--butter)">爽快感</strong> ── 画面いっぱいに広がる花火の演出</span>
+            </li>
+          </ul>
+
+          <span class="cta-btn btn-hanabi">
+            <span class="btn-apple-icon"></span>
+            近日公開
+          </span>
+        </div>
+
+        <div class="app-visual">
+          <div class="phone-mock" style="transform: rotate(3deg);">
+            <img src="hanabi-rensa.png" alt="花火連鎖 ゲーム画面" />
+          </div>
+          <div class="float-badge badge-free" style="color: #FF8C42; border-color: rgba(255,140,66,0.2); background: rgba(255,140,66,0.06);">✦ 無料プレイ</div>
+          <div class="float-badge badge-rating">iPhone · iPad</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ FOOTER ═══ -->
   <footer>
     <p>Made by <strong style="color: rgba(255,255,255,0.5)">Eiki Ogawa</strong></p>
@@ -660,6 +741,11 @@
       <a href="https://apps.apple.com/jp/app/%E3%83%90%E3%82%BF%E3%83%BC%E7%8C%AB%E3%82%AA%E3%82%BB%E3%83%AD/id6760817704" target="_blank" rel="noopener">バター猫オセロ</a>
       &nbsp;·&nbsp;
       <a href="https://apps.apple.com/jp/app/biboloc/id6458531710" target="_blank" rel="noopener">Biboloc</a>
+      &nbsp;·&nbsp;
+      <span style="color: rgba(255,255,255,0.25);">花火連鎖</span>
+    </p>
+    <p style="margin-top: 12px;">
+      <a href="support.html">サポート</a>
     </p>
     <p style="margin-top: 16px; font-size: 11px; opacity: 0.4;">
       Apple and the Apple logo are trademarks of Apple Inc.
